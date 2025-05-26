@@ -4,6 +4,7 @@ from sqlalchemy.orm import Session
 from transformers import pipeline
 from typing import List, Dict, Tuple, Optional
 from transformers.pipelines.base import Pipeline
+from digital_address_matcher.models.bert_ner.bert_ner import get_bert_ner, Pipeline
 from digital_address_matcher.common.types import OutputAddressPart, InputAddressPart, EntityPriorities
 from digital_address_matcher.address_matcher.abstract_matcher import AbstractMatcher
 from digital_address_matcher.services.KladrService import KladrService
@@ -13,15 +14,10 @@ from digital_address_matcher.preprocessing.bert_ner_utils.parse_utils import spl
 class BertMatcher(AbstractMatcher):
     """Адаптируемый класс матчера через aidarmusin/address-ner-ru."""
     
-    _model: Optional[Pipeline] = None
-    _device: Optional[str] = None
-    
     def __init__(self, db_session: Session):
         """Конструктор."""
         self._db_session: Session = db_session
-        if BertMatcher._model is None:
-            BertMatcher._device = "cuda:0" if torch.cuda.is_available() else "cpu"
-            BertMatcher._model = pipeline("ner", model="aidarmusin/address-ner-ru", device=self._device)
+        self._model: Pipeline = get_bert_ner()
             
             
     

@@ -92,6 +92,7 @@ razdel==0.5.0
 regex==2024.11.6
 requests==2.32.3
 safetensors==0.5.3
+scipy==1.15.3
 six==1.17.0
 slovnet==0.6.0
 sniffio==1.3.1
